@@ -22,13 +22,37 @@ class Shop extends React.Component  {
         const { updateCollections } = this.props
         const collectionRef= firestore.collection('collections');
 
-        this.unsubscribeFromSnapshot = collectionRef.onSnapshot(async snapshot => {
-            // console.log(snapshot)
-            const collectionsMap =  convertCollectionsSnapshotToMap(snapshot)
-            console.log(collectionsMap)
-            updateCollections(collectionsMap)
-            this.setState({ loading : false })
-        })
+        // this.unsubscribeFromSnapshot = collectionRef.onSnapshot(async snapshot => {
+        //     // console.log(snapshot)
+        //     const collectionsMap =  convertCollectionsSnapshotToMap(snapshot)
+        //     console.log(collectionsMap)
+        //     updateCollections(collectionsMap)
+        //     this.setState({ loading : false })
+        // }) ** This is object returning method
+
+        // collectionRef.get().then(
+        //     snapshot => {
+        //             // console.log(snapshot)
+        //             const collectionsMap =  convertCollectionsSnapshotToMap(snapshot)
+        //             console.log(collectionsMap)
+        //             updateCollections(collectionsMap)
+        //             this.setState({ loading : false })
+        //         }
+        // ) **this is a promise based request
+
+        fetch('https://firestore.googleapis.com/v1/projects/crown-db-f5972/databases/(default)/documents/collections')
+        .then(response => response.json())
+        .then(collections => console.log(collections))
+
+        collectionRef.get().then(
+            snapshot => {
+                    // console.log(snapshot)
+                    const collectionsMap =  convertCollectionsSnapshotToMap(snapshot)
+                    console.log(collectionsMap)
+                    updateCollections(collectionsMap)
+                    this.setState({ loading : false })
+                }
+        )
     }
 
     render(){
