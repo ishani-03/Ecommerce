@@ -27,3 +27,13 @@ export const selectCollection = collectionUrlParam => createSelector(
     //the above line of code is inefficient for long piece of data
     //find collection.id matching the url parameter of our collection id map
 )
+
+export const selectIsCollectionFetching = createSelector(
+    [selectShop],
+    shop => shop.isFetching
+)
+
+export const selectIsCollectionsLoaded = createSelector(
+    [selectShop],
+    shop => !!shop.collections
+)
