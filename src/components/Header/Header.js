@@ -9,10 +9,11 @@ import CartDropdown from '../Cart-dropdown/CartDropdown'
 // import { createStructuredSelector } from 'reselect'
 // import { selectCartHidden } from '../../redux/cart/CartSelector'
 // import { selectCurrentUser } from '../../redux/user/UserSelector'
+import { signOutStart } from '../../redux/user/UserAction'
 
 
 
-const Header=({currentUser,hidden})=>(
+const Header=({currentUser,hidden, signOutStart})=>(
     <div className='header'>
         <Link className='logo-container' to="/">
             <Logo className='logo'></Logo>
@@ -26,7 +27,8 @@ const Header=({currentUser,hidden})=>(
             </Link>
             {
                 currentUser ? (
-                    <div className='option' onClick={()=>auth.signOut()}>
+                    // <div className='option' onClick={()=>auth.signOut()}>
+                    <div className='option' onClick={signOutStart}>
                         SIGN OUT
                     </div>
                 ):(
@@ -60,9 +62,13 @@ const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
     hidden
   });
 
+  const mapDispatchToProps = dispatch =>({
+    signOutStart: () => dispatch(signOutStart())
+  })
+
 
 //mapStateToProps: is used for selecting the part of the data from the store that the connected component needs.
 
 
-export default connect(mapStateToProps) (Header)
+export default connect(mapStateToProps,mapDispatchToProps) (Header)
 
