@@ -1,4 +1,4 @@
-import { takeEvery , takeLatest , call , put } from 'redux-saga/effects'
+import { takeEvery , takeLatest , call , put ,all } from 'redux-saga/effects'
 //takeEvery listens for every action of the specific type that we pass to it 
 // Sagas do not dispatch actions using dispatch keyword, they use another effect called put
 import ShopActionTypes from './ShopTypes'
@@ -37,4 +37,8 @@ export function* fetchCollectionsAsync(){
 
 export function* fetchCollectionsStart(){
     yield takeLatest(ShopActionTypes.FETCH_COLLECTIONS_START, fetchCollectionsAsync )
+}
+
+export function* shopSagas(){
+    yield all([ call(fetchCollectionsStart)])
 }

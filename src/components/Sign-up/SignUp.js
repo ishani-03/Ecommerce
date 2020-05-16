@@ -2,8 +2,9 @@ import React from 'react'
 import './SignUp.scss'
 import FormInput from '../Form-input/FormInput'
 import CustomButton from '../Custom-button/CustomButton'
-import {auth , createUserProfileDocument} from '../../firebase/Firebase'
-
+// import {auth , createUserProfileDocument} from '../../firebase/Firebase'
+import { signUpStart } from '../../redux/user/UserAction'
+import { connect } from 'react-redux'
 
 class SignUp extends React.Component{
     constructor(){
@@ -19,26 +20,28 @@ class SignUp extends React.Component{
 
     handleSubmit=async event=>{
         event.preventDefault();
+        const { signUpStart } = this.props
         const {displayName,email,password,confirmPassword}=this.state;
         if(password !== confirmPassword){
             alert("Password doesn't match")
             return;
         }
-        try{
-            const { user } = await auth.createUserWithEmailAndPassword(email,password);
-            await createUserProfileDocument(user,{displayName}); //we are using await because we want to wait till the proccedure is complete
-            //for creating the account and when account is created we want to set our state back to null
+        signUpStart({ displayName, email, password })
+        // try{ 
+        //     const { user } = await auth.createUserWithEmailAndPassword(email,password);
+        //     await createUserProfileDocument(user,{displayName}); //we are using await because we want to wait till the proccedure is complete
+        //     //for creating the account and when account is created we want to set our state back to null
 
-            this.setState({
-                displayName:'',
-                email:'',
-                password:'',
-                confirmPassword:''
-            })//this will clear our from
-        }
-        catch(error){
-            console.error(error)
-        }
+        //     this.setState({
+        //         displayName:'',
+        //         email:'',
+        //         password:'',
+        //         confirmPassword:''
+        //     })//this will clear our from
+        // }
+        // catch(error){
+        //     console.error(error)
+        // }
     }
 
     handleChange=(event)=>{
@@ -75,4 +78,8 @@ class SignUp extends React.Component{
     }
 }
 
-export default SignUp
+const mapDispatchToProps = dispatch =>({
+    signUpStart : userCredentials=>  dispatch(signUpStart(userCredentials))
+})
+
+export default connect(null,mapDispatchToProps)(SignUp)
