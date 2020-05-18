@@ -1,4 +1,4 @@
-import React from 'react'
+import React , {useEffect } from 'react'
 import CollectionOverview from '../../components/collection-overview/CollectionOverview'
 import { Route } from 'react-router-dom'
 import Collection from '../collection/Collection'
@@ -16,7 +16,12 @@ const CollectionOverviewWithSpinner = WithSpinner(CollectionOverview)
 const CollectionWithSpinner = WithSpinner(Collection)
 
 
-class Shop extends React.Component  {
+const Shop = ({ match , isCollectionFetching , isColletionsLoaded , fetchCollectionsStart}) =>{
+
+    useEffect(() =>{
+        fetchCollectionsStart()
+    },[fetchCollectionsStart])
+
     // state = {
     //     loading : true
     // }
@@ -59,16 +64,16 @@ class Shop extends React.Component  {
     //     // )
     // }
 
-    componentDidMount() {
-        const { fetchCollectionsStart } = this.props;
+    // componentDidMount() {
+    //     const { fetchCollectionsStart } = this.props;
     
-        // fetchCollectionsStartAsync();
-        fetchCollectionsStart();
-        //fetchCollectionsStart is the name of our saga
-      }
+    //     // fetchCollectionsStartAsync();
+    //     fetchCollectionsStart();
+    //     //fetchCollectionsStart is the name of our saga
+    //   }
 
-    render(){
-        const {match , isCollectionFetching , isColletionsLoaded} = this.props;
+    
+        // const {match , isCollectionFetching , isColletionsLoaded} = this.props;
         // const { loading } = this.state
     return(
             <div className='shop-page'>
@@ -79,7 +84,7 @@ class Shop extends React.Component  {
             </div>
         )
         
-    }
+    
 }
 
 const mapStateToProps = createStructuredSelector ({

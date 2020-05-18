@@ -1,11 +1,24 @@
-import React from 'react'
+import React , {useEffect} from 'react'
 import './Collection.scss'
 import CollectionItem from '../../components/CollectionItem/CollectionItem'
 import {connect} from 'react-redux'
 // import {createStructuredSelector} from 'reselect'
 import {selectCollection} from '../../redux/shop/ShopSelector'
+import {firestore } from '../../firebase/Firebase'
 
 const Collection =( { collection }) =>{
+
+    useEffect(()=>{
+        console.log('I am subscribing')
+        const unsubscribeFromCollections = firestore.collection('collections').onSnapshot(snapshot => console.log(snapshot))
+
+        return()=>{
+            console.log('I am unsubscribed')
+            unsubscribeFromCollections()
+        }
+        //this return function is a clean-up function which can mimic any lifecycle method. here, componentWillUnmount
+    },[])
+
     console.log('collection',collection)
     const { title , items} = collection;
 return(
